@@ -5,7 +5,7 @@
 		$uri = 'http://';
 	}
 	$uri .= $_SERVER['HTTP_HOST'];
-	header('Location: '.$uri.'/dev/uRapApiPhpClient/uradapiclient/public');
+	header('Location: '.$uri.'/dev/uRadApiPhpClient/uradapiclient/public');
 	exit;
 ?>
 Something is wrong with the XAMPP installation :-(
