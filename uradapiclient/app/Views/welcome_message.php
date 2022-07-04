@@ -41,6 +41,14 @@
 									
                                 </div>
                             </div>
+                            <div class="m-1 u-inline-block">
+                            <a href="<?php echo base_url() . '/public/client/addnew/' . $token;?>">
+                                 <button class="btn-info">
+                                       Adicionar novo regsitro
+                                 </button>
+                              </a>
+                            </div>
+
                   </div>
                </div>
             </div>
