@@ -10,14 +10,14 @@
 
 
       <div class="input-container international nivel_conhecimento">
-						<label class="input-label" for="nivel_conhecimento">Qual o seu nível de conhecimento?</label>
+						<label class="input-label" for="nivel_conhecimento">Qual a situação de seu atendimento?</label>
 						<div class="international-radio">
 							<input id="iniciante" class="nivel-conhecimento" type="radio" name="nivel_conhecimento" checked="" value="1" required="required">
-							<label class="input-radio" for="iniciante">Iniciante</label>
+							<label class="input-radio" for="iniciante">Primeiro acesso</label>
 						</div>
 						<div class="international-radio">
 							<input id="avancado" class="nivel-conhecimento" type="radio" name="nivel_conhecimento" value="2" required="required">
-							<label class="input-radio" for="avancado">Já sou programador</label>
+							<label class="input-radio" for="avancado">Já sou paciente</label>
 						</div>	
 					</div>
 
@@ -41,7 +41,7 @@
           <label for="password_confirm">Confirme sua senha</label>
           <input type="password" id="password_confirm" name="password_confirm"><br>
           <small id="msg_password_confirm" class="u-none tag tag--danger text-light red-700">Repita a senha idêntica a que você criou acima</small><br>
-
+        <br>  
           <input type="submit" value="Enviar">
         </form>      
       </div>
@@ -55,6 +55,7 @@
     SUBMIT : Listner information submit
   */
   const form = document.getElementById('formBasic');
+  const mail = document.getElementById('mail');
   const password = document.getElementById('password');
   const password_confirm = document.getElementById('password_confirm');
   const name = document.getElementById('name');
@@ -74,9 +75,12 @@
   form.addEventListener('submit', (e) => {
     clearWarnings()
     lErro = false;
+    if ( emailExists() ){
+      lErro = true;
+    }  
     if (phone.value.trim() == ''){
       phone.classList.add('input-error')
-      phone.classList.remove('u-none');
+      msg_phone.classList.remove('u-none');
       lErro = true;
     }
     if (mail.value.trim() == ''){
@@ -105,6 +109,35 @@
       return true;
     }
   });
+
+
+  /*
+  E-mail exists
+  */
+  function emailExists() {
+    let lErro = false;
+    let cUrl = '<?php echo base_url();?>/public/client/record_by_email/' + mail.value + '/<?php echo $token; ?>';
+    console.log(cUrl);
+    fetch(cUrl).then(function(response) {      
+      return response.json();
+    }).then(function(data) {
+      console.log(data);
+      if (data.data != null ){
+        if (data.data[0].id>0){
+            mail.classList.add('input-error')
+            msg_mail.classList.remove('u-none')
+            msg_mail.innerText = 'Já existe este e-mail no cadastro'
+            console.log('Este e-mail já existe')
+            lErro = true
+            return true;
+        }
+        console.log(data.data);
+      }
+    }).catch(function(error) {
+      console.log(error);
+    });
+    return lErro;
+  }
 
   /*
   Clear fields for default state

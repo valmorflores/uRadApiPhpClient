@@ -27,10 +27,14 @@ class Client extends BaseController
     }
 
     public function postdo($token='')
-    {                
+    {       
+        //
     	$datainfo = '{
             "autoinc" : "id",
-            "name" : "'. $this->request->getVar('name') .'"
+            "name" : "'. $this->request->getVar('name') .'",
+            "mail" : "' . $this->request->getVar('mail') . '",
+            "phoneOne" : "' . $this->request->getVar('phone') . '",
+            "phoneOne" : "' . $this->request->getVar('phone') . '" 
         }';
 	    $url = '/tables/data/table_client';
         $info = $this->api->postWithAuthorization($url,$datainfo,$token);
@@ -65,6 +69,12 @@ class Client extends BaseController
         $data['content'] = 'client/client_new';
         return view('Design/default_page',$data);
         
+    }
+
+    public function record_by_email($email, $token){
+        $info = $this->api->getWithAuthorization('/tables/data-by/table_client/mail/' . $email,$token);
+        echo trim($info);
+        die;
     }
 
 
