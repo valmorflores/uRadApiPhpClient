@@ -37,6 +37,12 @@ class Client extends BaseController
         $infoJson = json_decode($info);
         if (!isset($infoJson->status)){
             echo 'Erro, resultado desconhecido';
+            if (isset($infoJson->message)){
+                echo '<br>' . $infoJson->message;
+            }
+            echo var_dump($info);
+	        echo var_dump($url);
+	        echo var_dump($datainfo);
             return false;
         }
         if ($infoJson->status==200){
