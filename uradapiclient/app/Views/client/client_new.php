@@ -86,6 +86,7 @@
     if (mail.value.trim() == ''){
       mail.classList.add('input-error')
       msg_mail.classList.remove('u-none');
+      msg_mail.innerText = 'E-mail deve ser preenchido'
       lErro = true;
     }
     if (name.value.trim() == ''){
