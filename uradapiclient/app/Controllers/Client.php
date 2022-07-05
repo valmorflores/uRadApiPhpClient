@@ -28,19 +28,29 @@ class Client extends BaseController
 
     public function postdo($token='')
     {                
-         
-	$datainfo = '{
+    	$datainfo = '{
             "autoinc" : "id",
             "name" : "'. $this->request->getVar('name') .'"
         }';
-
-	$url = '/tables/data/table_client';
+	    $url = '/tables/data/table_client';
         $info = $this->api->postWithAuthorization($url,$datainfo,$token);
-        echo var_dump($info);
-	echo var_dump($url);
-	echo var_dump($datainfo);
-
-        die;
+        $infoJson = json_decode($info);
+        if (!isset($infoJson->status)){
+            echo 'Erro, resultado desconhecido';
+            return false;
+        }
+        if ($infoJson->status==200){
+            echo 'Sucesso na inclusao dos dados';
+        }
+        else
+        {
+            echo 'Erro ao inserir informações';
+            echo var_dump($info);
+	        echo var_dump($url);
+	        echo var_dump($datainfo);
+            return false;
+        }
+        return true;
     }
 
     public function addnew($token='')
