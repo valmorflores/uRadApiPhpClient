@@ -137,8 +137,8 @@ class ApiController extends BaseController
             'Content-Type: application/json',
             'Authorization: Bearer ' . $authorization)
         );
-            
         $curl_scraped_page = curl_exec($ch);
+	//$curl_scraped_page=$url . $curl_scraped_page;
         curl_close($ch);
         return $curl_scraped_page;
 

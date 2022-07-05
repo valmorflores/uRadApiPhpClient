@@ -28,12 +28,18 @@ class Client extends BaseController
 
     public function postdo($token='')
     {                
-        var_dump($token);
-        $data['name'] = $this->request->getVar('name');
-        $fields='name=' . $data['name'];
-        $info = $this->api->postWithAuthorization('/tables/data/table_client',$fields,$token);
-        echo var_dump($data['name']);
+         
+	$datainfo = '{
+            "autoinc" : "id",
+            "name" : "'. $this->request->getVar('name') .'"
+        }';
+
+	$url = '/tables/data/table_client';
+        $info = $this->api->postWithAuthorization($url,$datainfo,$token);
         echo var_dump($info);
+	echo var_dump($url);
+	echo var_dump($datainfo);
+
         die;
     }
 
