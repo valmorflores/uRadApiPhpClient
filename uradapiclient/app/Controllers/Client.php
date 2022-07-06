@@ -18,6 +18,7 @@ class Client extends BaseController
 
     public function index($token='')
     {
+        $token = getenv('APP_API_KEY');
         $info = $this->api->getWithAuthorization('/tables/data/table_client',$token);
         $data['token'] = $token;
         $data['info'] = json_decode( $info );
@@ -37,6 +38,7 @@ class Client extends BaseController
             "phoneOne" : "' . $this->request->getVar('phone') . '" 
         }';
 	    $url = '/tables/data/table_client';
+        $token = getenv('APP_API_KEY');
         $info = $this->api->postWithAuthorization($url,$datainfo,$token);
         $infoJson = json_decode($info);
         if (!isset($infoJson->status)){
@@ -72,6 +74,7 @@ class Client extends BaseController
     }
 
     public function record_by_email($email, $token){
+        $token = getenv('APP_API_KEY');
         $info = $this->api->getWithAuthorization('/tables/data-by/table_client/mail/' . $email,$token);
         echo trim($info);
         die;
