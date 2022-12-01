@@ -25,7 +25,7 @@ class ApiController extends BaseController
     public function get($uri){
         $proxy = '';
         $url = getenv('APP_API_URL') . $uri;
-        if ( getenv('APP_API_URL') ) {
+        if ( getenv('APP_API_PROXY') ) {
            $proxy = getenv('APP_API_PROXY');
         }
         
@@ -233,5 +233,74 @@ class ApiController extends BaseController
         //print_r($result_noti);die;
         return $result_noti;
     }
+
+
+    public function putWithAuthorization($uri, $data, $auth=''){
+        
+        $url = getenv('APP_API_URL') . $uri;         
+        if ( getenv('APP_API_PROXY') ) {
+           $proxy = getenv('APP_API_PROXY');
+        }
+             
+        $ch = curl_init($url);
+        if ($auth!=''){
+            $authorization = $auth;
+        } else{
+            $authorization = $this->session->getFlashdata('token');
+        }
+        
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $authorization)
+        );
+            
+        $curl_scraped_page = curl_exec($ch);
+        curl_close($ch);
+        return $curl_scraped_page;
+
+    }
+
+
+    public function patchWithAuthorization($uri, $data, $auth=''){
+        
+        $url = getenv('APP_API_URL') . $uri;         
+        if ( getenv('APP_API_PROXY') ) {
+           $proxy = getenv('APP_API_PROXY');
+        }
+             
+        $ch = curl_init($url);
+        if ($auth!=''){
+            $authorization = $auth;
+        } else{
+            $authorization = $this->session->getFlashdata('token');
+        }
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json-patch+json',
+            'Authorization: Bearer ' . $authorization)
+        );
+            
+        $curl_scraped_page = curl_exec($ch);
+        curl_close($ch);
+        return $curl_scraped_page;
+
+    }
+
 
 }

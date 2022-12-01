@@ -37,7 +37,8 @@ class Client extends BaseController
             "phoneOne" : "' . $this->request->getVar('phone') . '",
             "phoneOne" : "' . $this->request->getVar('phone') . '" 
         }';
-	    $url = '/tables/data/table_client';
+	    //$url = '/tables/data/table_client';
+        $url = '/tables/insert/TIADMIN_USER';
         $token = getenv('APP_API_KEY');
         $info = $this->api->postWithAuthorization($url,$datainfo,$token);
         $infoJson = json_decode($info);
